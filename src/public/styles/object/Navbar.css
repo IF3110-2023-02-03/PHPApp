@@ -32,6 +32,11 @@
     gap: 10px;
 }
 
+.navbar-item img {
+    width: 40px;
+    height: 40px;
+}
+
 .navbar-item-desc {
     text-decoration: none;
     font-size: 16px;
@@ -66,7 +71,7 @@
     
     .navbar {
         height: 50px;
-        padding: 0 10%;
+        padding: 0 15%;
         gap: 15%;
     } 
 

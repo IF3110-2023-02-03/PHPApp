@@ -292,6 +292,34 @@ class UserController extends Controller implements ControllerInterface
         }
     }
 
+    public function spaces()
+    {
+        try {
+            switch ($_SERVER['REQUEST_METHOD']) {
+                case 'GET':
+                    // Prevent Access except User
+                    $authMiddleware = $this->middleware('AuthenticationMiddleware');
+                    $authMiddleware->isUser();
+
+                    // Cari user ID
+                    if (isset($_SESSION['user_id'])) {
+                        $profileView = $this->view('user', 'SpacesView', []);
+                    } else {
+                        // Tampilkan home page untuk user yang belum login
+                        $profileView = $this->view('home', 'UnauthorizedHomeView', []);
+                    }
+                    $profileView->render();
+                    exit;
+
+                default:
+                    throw new LoggedException('Method Not Allowed', 405);
+            }
+        } catch (Exception $e) {
+            http_response_code($e->getCode());
+            exit;
+        }
+    }
+
     public function manage()
     {
         try {

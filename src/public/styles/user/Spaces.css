@@ -1,0 +1,304 @@
+body {
+    height: 100%;
+}
+
+.spaces-content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap:3vh;
+}
+
+.photo {
+    width: 50vw;
+    max-height: 50vh;
+    padding: 2% 0;
+    
+    background-color: peachpuff;
+    border-radius: 50px;
+    border: 1px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
+}
+
+.photo-img-container {
+    width: 45%;
+    height: 40vh;
+    background-color: aqua;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.photo-img {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    object-fit: contain;
+}
+
+.photo-info-container {
+    width: 40%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.photo-name-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.photo-name {
+    overflow-wrap: break-word;
+    margin: 0;
+}
+
+.photo-name-edit {
+    height: 26px;
+    width: 26px;
+    display: inline-flex;
+}
+
+.photo-info-property {
+    margin: 0;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.photo-property-icon {
+    height: 26px;
+    width: 26px;
+    margin: 2px;
+}
+
+.photo-property-icon:hover {
+    height: 28px;
+    width: 28px;
+    margin: 0;
+    transition: 0.3s;
+}
+
+.photo-property-desc {
+    font-size: 20px;
+    margin: 2% 2%;
+}
+
+.visibility-status {
+    font-size: 24px;
+    margin: 2% 0;
+}
+
+.button-black {
+    height: max-content;
+    font-weight: bold;
+    color: white;
+    padding: 10px 20px;
+    background-color: black;
+    font-size: 16px;
+    border-radius: 15px;
+    transition: 0.3s
+}
+
+.button-black:hover {
+    color: black;
+    background-color: white;
+    transition: 0.3s;
+}
+
+.textfield {
+    height: 52px;
+    padding: 0 10%;
+    border-radius: 25px;
+}
+
+.textfield:focus {
+    height: 55px;
+    padding: 0 12%;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+
+.textfield2 {
+    width: 100%;
+    height: 55px;
+    padding: 0 5%;
+    border-radius: 25px;
+}
+
+.form {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    gap:10px
+}
+
+h2 {
+    font-size: 36px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.comments-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-item {
+    margin: 2% 0;
+
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.comment-sender {
+    font-weight: bold;
+    margin: 0;    
+}
+
+.comment-content {
+    margin: 0;    
+}
+
+.photo-name {
+    font-size: 40px;
+    overflow-wrap: break-word;
+    margin: 0;
+}
+
+.broadcast {
+    width: 50vw;
+    padding: 2% 0;
+    
+    background-color: white;
+    border-radius: 50px;
+    border: 1px solid black;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.bc-head {
+    width: 90%;
+    font-size: 30px;
+    font-weight: 500;
+    margin: 2% 0;
+}
+
+.bc-content {
+    width: 90%;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 2%;
+}
+
+.scrollable-spaces {
+    height: 35vh;
+    margin-bottom: 5%;
+
+    top: 0;
+
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.bc-prop {
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+}
+
+.back-button {
+    height: max-content;
+    width: max-content;
+    font-weight: bold;
+    color: white;
+    padding: 10px 20px;
+    background-color: black;
+    font-size: 16px;
+    border-radius: 15px;
+    transition: 0.3s;
+    display: none;
+}
+
+.black-button {
+    height: 15%;
+    width: 100%;
+    font-weight: bold;
+    color: white;
+    padding: 10px 20px;
+    background-color: black;
+    font-size: 16px;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+.creator {
+    width: 31%;
+    height: 25vh;
+    padding: 2% 0;
+    
+    border-radius: 50px;
+    border: 1px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
+}
+
+.creator-left-img {
+    height: 70%;
+    width: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+.creator-left {
+    width: 40%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.creator-right {
+    width: 40%;
+}
+
+
+.creator-name {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0;
+    margin-bottom: 2%;
+}
+
+.creator-desc {
+    font-size: 16px;
+}
+
+.creator-prop {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
