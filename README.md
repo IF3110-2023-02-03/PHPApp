@@ -57,23 +57,21 @@
 
 ![Register](https://github.com/natthankrish/IF3110-2023-01-03/assets/89324014/a26da485-a074-4839-9ced-4c2a13bee684)
 
-
 ### Home
 
 ![Home](https://github.com/natthankrish/IF3110-2023-01-03/assets/89324014/1a903062-6089-4fa1-8106-c6a174eba6da)
 
 ### Photos
 
-![Photos](./screenshots/list-album-1.png)
+![Photos](https://github.com/IF3110-2023-02-03/PHPApp/assets/102899833/2a702972-1af1-4253-9325-3c0881b76205)
 
 ### Search
 
-![Search](./screenshots/search-sort-filter-1.png)
+![Search](https://github.com/IF3110-2023-02-03/PHPApp/assets/102899833/a21dfe96-dd4f-43d4-b3c1-0c36647d6ef4)
 
 ### feeds
 
-![Feeds](./screenshots/edit-song-1.png)
-
+![Feeds](https://github.com/IF3110-2023-02-03/PHPApp/assets/102899833/e5894176-f8cb-4593-bf30-ce396612d5c6)
 
 ## _Entity Relationship Diagram_
 
@@ -84,7 +82,7 @@ Browser dan Docker
 
 ## BONUS
 ### Google Lighthouse
-![messageImage_1696837690091](https://github.com/natthankrish/IF3110-2023-01-03/assets/92136335/69e287ff-40a4-4912-a36f-71739d262a57)
+![Google Lighthouse](https://github.com/natthankrish/IF3110-2023-01-03/assets/92136335/69e287ff-40a4-4912-a36f-71739d262a57)
 
 ### Docker
 
