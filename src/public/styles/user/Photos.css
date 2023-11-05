@@ -227,6 +227,7 @@ body {
     color: black;
     background-color: white;
     transition: 0.3s;
+    cursor: pointer;
 }
 
 .textfield {
@@ -427,15 +428,11 @@ input[type="file"] {
     border-radius: 25px;
 }
 
-#button-search:hover {
-    transform: scale(1.2);
-    cursor: pointer;
-}
-
 .dropdown {
     height: 55px;
     width: 20%;
 
+    cursor: pointer;
     font-size: 16px;
     padding: 0 5%;
     border-radius: 25px;

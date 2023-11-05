@@ -1,6 +1,5 @@
 const container = document.getElementById('container')
 const listPagination = document.getElementById('list-pagination')
-const buttonSearch = document.getElementById('button-search')
 const textbox = document.getElementById('fname')
 const sortName = document.getElementById('sortName')
 const filter = document.getElementById('filter')
@@ -204,10 +203,14 @@ function displayPagination(len, current){
 //     setupLength(textbox.value, filter.value, statePage.value-1)
 // })
 
-buttonSearch.addEventListener('click', () => {
-    refresh(12, 1, textbox.value, filter.value, "0")
-    setupLength(textbox.value, filter.value, 1)
-})
+textbox &&
+    textbox.addEventListener(
+        "keyup",
+        debounce(() => {
+            refresh(12, 1, textbox.value, filter.value, "0")
+            setupLength(textbox.value, filter.value, 1)
+        }, DEBOUNCE_TIMEOUT)
+    );
 
 sortName.addEventListener('click', () => {
     sortName.classList.toggle("active")
