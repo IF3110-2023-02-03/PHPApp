@@ -27,7 +27,7 @@ services:
 
     # Map host port 3307 to container port 3306 for MySQL traffic
     ports:
-      - 3307:3306
+      - 3308:3306
 
     # Set a custom hostname for the mysql service
     hostname: db-moments

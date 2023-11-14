@@ -100,6 +100,21 @@ loginForm &&
                     document.querySelector("#login-alert").className =
                         "alert-hide";
                     const data = JSON.parse(this.responseText);
+                    const xhr2 = new XMLHttpRequest();
+                    xhr2.open(
+                        "GET",
+                        `/public/user/data?csrf_token=${CSRF_TOKEN}`
+                    );
+                    
+                    xhr2.send();
+                    xhr2.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            const data = JSON.parse(this.responseText);
+                            localStorage.setItem("fullname", data['fullname'])
+                            localStorage.setItem("username", data["username"])
+                            localStorage.setItem("id", data["user_id"])
+                        }
+                    };
                     location.replace(data.redirect_url);
                 } else {
                     document.querySelector("#login-alert").className =

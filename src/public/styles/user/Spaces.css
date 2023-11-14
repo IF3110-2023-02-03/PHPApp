@@ -241,11 +241,9 @@ h2 {
 }
 
 .black-button {
-    height: 15%;
-    width: 100%;
     font-weight: bold;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 15px;
     background-color: black;
     font-size: 16px;
     border-radius: 15px;
@@ -278,7 +276,7 @@ h2 {
     height: 90%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .creator-right {
