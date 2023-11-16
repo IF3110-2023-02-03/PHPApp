@@ -2,7 +2,6 @@ const searchbar = document.getElementById('searchbar');
 const content = document.getElementById('content');
 const backButton = document.getElementById('back-button');
 const container = document.getElementById('content');
-const buttonSearch = document.getElementById('button-search')
 let buttonFollows = Array.from(document.getElementsByClassName('button-follow'))
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -17,10 +16,14 @@ searchbar.addEventListener('focus', function() {
     getContentCreators(1, '')
 })
 
-buttonSearch.addEventListener('click', function(){
-    content.innerHTML = ""
-    getContentCreators(1, searchbar.ariaValueText || '')
-})
+searchbar &&
+    searchbar.addEventListener(
+        "keyup",
+        debounce(() => {
+            content.innerHTML = ""
+            getContentCreators(1, searchbar.ariaValueText || '')
+        }, DEBOUNCE_TIMEOUT)
+    );
 
 function getContentCreators(page, filter){
     const xhr = new XMLHttpRequest();
