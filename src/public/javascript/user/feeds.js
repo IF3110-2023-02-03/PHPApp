@@ -1,6 +1,5 @@
 const container = document.getElementById('container');
 const listPagination = document.getElementById('list-pagination')
-const buttonSearch = document.getElementById('button-search')
 const textbox = document.getElementById('fname')
 let CURRENT_USERNAME;
 const statePage = document.getElementById('state-page')
@@ -332,10 +331,14 @@ function setupLength(filter, current){
     };
 }
 
-buttonSearch.addEventListener('click', () => {
-    refresh(12, 1, textbox.value)
-    setupLength(textbox.value, 1)
-})
+textbox &&
+    textbox.addEventListener(
+        "keyup",
+        debounce(() => {
+            refresh(12, 1, textbox.value)
+            setupLength(textbox.value, 1)
+        }, DEBOUNCE_TIMEOUT)
+    );
 
 function displayPagination(len, current){
     listPagination.innerHTML = '';
