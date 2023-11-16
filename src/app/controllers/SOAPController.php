@@ -203,23 +203,23 @@ class SOAPController extends Controller implements ControllerInterface
         try {
             switch ($_SERVER['REQUEST_METHOD']) {
                 case 'GET':
-                    $page = $_GET['page']
-                    $filter = $_GET['filter']
-                    $id = $_GET['id']
+                    $page = $_GET['page'];
+                    $filter = $_GET['filter'];
+                    $id = $_GET['id'];
 
-                    $ch = curl_init('http://localhost:8000/api/following')
+                    $ch = curl_init('http://localhost:8000/api/following');
                     
-                    $xmlData = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">
+                    $xmlData = `<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">
                         <Body>
                             <getContentCreators xmlns=\"http://services.example.org/\">
-                                <arg0 xmlns="">$page</arg0>
+                                <arg0 xmlns="">{$page}</arg0>
                                 <arg1 xmlns="">12</arg1>
                                 <arg2 xmlns="">$filter</arg2>
                                 <arg3 xmlns="">$id</arg3>
                                 <arg4 xmlns="">ini_api_key_monolitik</arg4>
                             </getContentCreators>
                         </Body>
-                    </Envelope>"
+                    </Envelope>`;
 
                     curl_setopt($ch, CURLOPT_POST, true);
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlData);

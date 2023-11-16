@@ -99,13 +99,13 @@ loginForm &&
                 if (this.status === 201) {
                     document.querySelector("#login-alert").className =
                         "alert-hide";
-                    const data = JSON.parse(this.responseText);
+                    const data1 = JSON.parse(this.responseText);
                     const xhr2 = new XMLHttpRequest();
                     xhr2.open(
                         "GET",
                         `/public/user/data?csrf_token=${CSRF_TOKEN}`
                     );
-                    
+                    console.log(data1)
                     xhr2.send();
                     xhr2.onreadystatechange = function () {
                         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -113,9 +113,9 @@ loginForm &&
                             localStorage.setItem("fullname", data['fullname'])
                             localStorage.setItem("username", data["username"])
                             localStorage.setItem("id", data["user_id"])
+                            location.replace(data1.redirect_url);
                         }
                     };
-                    location.replace(data.redirect_url);
                 } else {
                     document.querySelector("#login-alert").className =
                         "alert-show";
