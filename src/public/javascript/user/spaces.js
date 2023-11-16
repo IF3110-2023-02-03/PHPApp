@@ -53,6 +53,93 @@ function isLiked(id, type) {
     };
 }
 
+function getComments(id, type) {
+    const xhr = new XMLHttpRequest();
+
+    if (type == 'Broadcast') {
+        xhr.open("GET", `http://localhost:3000/api/broadcast/comment?user=${localStorage.getItem("username")}&id=${id}`);
+    } else {
+        xhr.open("GET", `http://localhost:3000/api/content/comment?user=${localStorage.getItem("username")}&id=${id}`);
+    }
+    
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE) {
+            var responseObj = JSON.parse(this.responseText);
+            console.log(responseObj, responseObj.data.length);
+            
+            let container;
+            if (type == 'Broadcast') {
+                container = document.getElementById('commentsbc' + id);
+            } else {
+                container = document.getElementById('comments' + id);
+            }
+
+            for (let i = 0; i < responseObj.data.length; i++) {
+                let comment = makeUserComment(responseObj.data[i].message, responseObj.data[i].user);
+                container.appendChild(comment);
+            }
+        }
+    };
+}
+
+function addComment(object) {
+    let object_id = object.parentElement.parentElement.parentElement.parentElement.id;
+    let classname = object.parentElement.parentElement.parentElement.parentElement.className;
+    let textfield;
+
+    const xhr = new XMLHttpRequest();
+
+    if (classname == 'broadcast') {
+        textfield = document.querySelector(`#tfbc-comment${object_id}`)
+        xhr.open("POST", "http://localhost:3000/api/broadcast/comment/" + object_id);
+        xhr.setRequestHeader("Content-Type", "application/json");
+    } else {
+        textfield = document.querySelector(`#tf-comment${object_id}`)
+        xhr.open("POST", "http://localhost:3000/api/content/comment/" + object_id);
+        xhr.setRequestHeader("Content-Type", "application/json");
+    }
+
+    xhr.send(JSON.stringify({user: localStorage.getItem("username"), message: textfield.value}));
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE) {
+            let comment = makeUserComment(textfield.value, localStorage.getItem("username"));
+            let container;
+            if (classname == 'broadcast') {
+                container = document.getElementById('commentsbc' + object_id);
+            } else {
+                container = document.getElementById('comments' + object_id);
+            }
+            container.appendChild(comment);
+            textfield.value = '';
+        }
+    };
+}
+
+function makeUserComment(content, username) {
+    const commentItemDiv = document.createElement("div");
+    commentItemDiv.classList.add("comment-item");
+
+    const commentContainerDiv = document.createElement("div");
+    commentContainerDiv.classList.add("comment-container");
+
+    const commentSenderP = document.createElement("p");
+    commentSenderP.classList.add("comment-sender");
+    commentSenderP.textContent = username;
+
+    const commentContentP = document.createElement("p");
+    commentContentP.classList.add("comment-content");
+    commentContentP.textContent = content;
+
+    commentContainerDiv.appendChild(commentSenderP);
+    commentContainerDiv.appendChild(commentContentP);
+
+    commentItemDiv.appendChild(commentContainerDiv);
+    return commentItemDiv;
+}
+
 function getContentCreators(page, filter){
     const xhr = new XMLHttpRequest();
     xhr.open(
@@ -249,12 +336,12 @@ function addPhoto(id, type, post_date, url, description) {
             </div>
             <br>
             <h1 class="visibility-status">Comments</h1>
-            <div class="comments-container" >
+            <div class="comments-container" id="comments${id}">
             </div>
         </div>
         <div>
             <div class="form">
-                <input type="text"  class="textfield2" placeholder="Write a comment"><br>    
+                <input type="text" id="tf-comment${id}" class="textfield2" placeholder="Write a comment"><br>    
                 <input type="submit" onclick="addComment(this)" value="Send" class="button-black">
             </div>
         </div>
@@ -263,6 +350,7 @@ function addPhoto(id, type, post_date, url, description) {
     node.innerHTML = creator;
     content.appendChild(node);
     isLiked(id, 'Content');
+    getComments(id, 'Content');
 }
 
 function addBroadcast(id, description, date) {
@@ -291,12 +379,12 @@ function addBroadcast(id, description, date) {
                     </div>
                     <br>
                     <h1 class="visibility-status">Comments</h1>
-                    <div class="comments-container" >
+                    <div class="comments-container" id="commentsbc${id}">
                     </div>
                 </div>
                 <div>
                     <div class="form">
-                        <input type="text"  class="textfield2" placeholder="Write a comment"><br>    
+                        <input type="text" id="tfbc-comment${id}" class="textfield2" placeholder="Write a comment"><br>    
                         <input type="submit" onclick="addComment(this)" value="Send" class="button-black">
                     </div>
                 </div>
@@ -305,4 +393,5 @@ function addBroadcast(id, description, date) {
     node.innerHTML = creator;
     content.appendChild(node);
     isLiked(id, 'Broadcast');
+    getComments(id, 'Broadcast');
 }
