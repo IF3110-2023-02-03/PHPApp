@@ -316,6 +316,8 @@ function refresh(perpage, page, filter) {
     };
 }
 
+let len;
+
 function setupLength(filter, current){
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `/public/object/getLengthPublic?filter=${filter}`);
@@ -324,7 +326,7 @@ function setupLength(filter, current){
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE) {
             var responseObj = JSON.parse(this.responseText);
-            var len = responseObj.object.len;
+            len = responseObj.object.len;
             statePage.value = current
             displayPagination(len,current)
         }
@@ -342,45 +344,54 @@ textbox &&
 
 function displayPagination(len, current){
     listPagination.innerHTML = '';
-    if(current == 1){
-        leftButton.style.display = "none"
-    }else{
-        leftButton.style.display = "block"
+    const maxButtonsToShow = 10;
+
+    let startPage = Math.max(1, current - Math.floor(maxButtonsToShow / 2));
+    let endPage = Math.min(Math.ceil(len / 12), startPage + maxButtonsToShow - 1);
+
+    if (endPage - startPage + 1 < maxButtonsToShow) {
+        startPage = Math.max(1, endPage - maxButtonsToShow + 1);
     }
-    if(current == Math.ceil(len/12)){
-        rightButton.style.display = "none"
-    }else{
-        rightButton.style.display = "block"
-    }
-    for(let i=0;i<=len;i+=12){
-        if(i>current-3 || i<current+3){
-            const p = document.createElement('p')
-            p.innerHTML = (i+12)/12
-            p.className = 'page-item'
-            if((i+12)/12 == current){
-                p.style.fontSize = '38px'
-                p.style.fontWeight = 'bold'
-            }
-            p.onclick = () => {
-                refresh(12, (i+12)/12, textbox.value)
-                statePage.value =(i+12)/12
-                displayPagination(len,(i+12)/12)
-            }
-            listPagination.appendChild(p)
+
+    for (let i = startPage; i <= endPage; i++) {
+        const p = document.createElement('p');
+        p.innerHTML = i;
+        p.className = 'page-item';
+
+        // Add cursor:pointer style when hovering over the pagination numbers
+        p.style.cursor = 'pointer';
+
+        if (i === current) {
+            p.style.fontSize = '38px';
+            p.style.fontWeight = 'bold';
         }
+
+        p.onclick = () => {
+            const clickedPage = i;
+            refresh(12, clickedPage, textbox.value);
+            statePage.value = clickedPage;
+            displayPagination(len, clickedPage);
+        };
+
+        listPagination.appendChild(p);
     }
+
+    leftButton.onclick = () => {
+        const prevPage = Math.max(1, current - 1);
+        refresh(12, prevPage, textbox.value);
+        setupLength(textbox.value, prevPage)
+        statePage.value = prevPage;
+        displayPagination(len, prevPage);
+    };
+
+    rightButton.onclick = () => {
+        const nextPage = Math.min(Math.ceil(len / 12), current + 1);
+        refresh(12, nextPage, textbox.value);
+        setupLength(textbox.value, nextPage)
+        statePage.value = nextPage;
+        displayPagination(len, nextPage);
+    };
 }
-
-// leftButton.addEventListener('click', () => {
-//     refresh(12, statePage.value-1, textbox.value)
-//     setupLength(textbox.value, statePage.value-1)
-// })
-
-// rightButton.addEventListener('click', () => {
-//     refresh(12, statePage.value+1, textbox.value)
-//     setupLength(textbox.value, statePage.value+1)
-// })
-
 
 window.addEventListener(
     "load",
