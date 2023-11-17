@@ -5,6 +5,7 @@ const container = document.getElementById('content');
 let buttonFollows = Array.from(document.getElementsByClassName('button-follow'))
 
 window.addEventListener('DOMContentLoaded', function() {
+    content.innerHTML = ""
     getContents();
 })
 
@@ -257,6 +258,7 @@ backButton.addEventListener('click', function() {
     backButton.style.display = "none";
     content.style.flexDirection = "column";
 
+    content.innerHTML = ""
     getContents()
 })
 
@@ -271,8 +273,32 @@ function getContents(){
         if (xhr.readyState === XMLHttpRequest.DONE) {
             const res = JSON.parse(this.responseXML.getElementsByTagName("return")[0].textContent)
             console.log(res)
-            res.data.objects.map(obj => addPhoto(obj.objectID, obj.type, obj.post_date, obj.url, obj.description))
-            res.data.broadcasts.map(bdc => addBroadcast(bdc.objectID, bdc.description, bdc.post_date))
+            const lenObj = res.data.objects.length;
+            const lenBdc = res.data.broadcasts.length;
+            console.log(lenBdc, lenObj)
+            let i = 0;
+            let j = 0;
+            while(i<lenObj && j<lenBdc){
+                if(new Date(res.data.objects[i].post_date) > new Date(res.data.broadcasts[j].post_date)){
+                    addPhoto(res.data.objects[i].objectID, res.data.objects[i].type, res.data.objects[i].post_date, res.data.objects[i].url, res.data.objects[i].description)
+                    i++;
+                }else{
+                    addBroadcast(res.data.broadcasts[i].objectID, res.data.broadcasts[i].description, res.data.broadcasts[i].post_date)
+                    j++;
+                }
+            }
+            if(i<lenObj){
+                while(i<lenObj){
+                    addPhoto(res.data.objects[i].objectID, res.data.objects[i].type, res.data.objects[i].post_date, res.data.objects[i].url, res.data.objects[i].description)
+                    i++;
+                }
+            }
+            if(j<lenBdc){
+                while(j<lenBdc){
+                    addBroadcast(res.data.broadcasts[j].objectID, res.data.broadcasts[j].description, res.data.broadcasts[j].post_date)
+                    j++;
+                }
+            }
         }
     };
 }
