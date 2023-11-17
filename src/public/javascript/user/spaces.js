@@ -19,32 +19,19 @@ searchbar.addEventListener('focus', function() {
 searchbar &&
     searchbar.addEventListener(
         "keyup",
-        debounce(() => {
+        debounce((e) => {
             content.innerHTML = ""
-            getContentCreators(1, searchbar.ariaValueText || '')
+            getContentCreators(1, e.target.value)
         }, DEBOUNCE_TIMEOUT)
     );
 
 function getContentCreators(page, filter){
     const xhr = new XMLHttpRequest();
     xhr.open(
-        "POST",
-        'http://localhost:8000/api/following'
+        "GET",
+        `/public/SOAP/getContentCreators?page=1&filter=${searchbar.ariaValueText || ''}&id=${localStorage.getItem("id")}`
     )
-    xhr.setRequestHeader("Content-Type", "text/xml");
-    xhr.send(`
-        <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
-            <Body>
-                <getContentCreators xmlns="http://services.example.org/">
-                    <arg0 xmlns="">${page}</arg0>
-                    <arg1 xmlns="">12</arg1>
-                    <arg2 xmlns="">${filter}</arg2>
-                    <arg3 xmlns="">${localStorage.getItem("id")}</arg3>
-                    <arg4 xmlns="">ini_api_key_monolitik</arg4>
-                </getContentCreators>
-            </Body>
-        </Envelope>
-    `)
+    xhr.send()
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE) {
             if (this.status === 200) {
@@ -62,26 +49,20 @@ function getContentCreators(page, filter){
 function reqFollow(e){
     const params = e.target.id.split("-")
     const xhr = new XMLHttpRequest();
+
+    const formData = new FormData();
+    formData.append("creatorID", params[0]);
+    formData.append("followerID", localStorage.getItem("id"));
+    formData.append("creatorName", params[2]);
+    formData.append("followerName", localStorage.getItem("fullname"));
+    formData.append("creatorUsername", params[1]);
+    formData.append("followerUsername", localStorage.getItem("username"));
+
     xhr.open(
         "POST",
-        "http://localhost:8000/api/following"
+        "/public/SOAP/reqFollow"
     );
-    xhr.setRequestHeader("Content-Type", "text/xml");
-    xhr.send(`
-        <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
-            <Body>
-                <requestFollow xmlns="http://services.example.org/">
-                    <arg0 xmlns="">${params[0]}</arg0>
-                    <arg1 xmlns="">${localStorage.getItem("id")}</arg1>
-                    <arg2 xmlns="">${params[2]}</arg2>
-                    <arg3 xmlns="">${localStorage.getItem("fullname")}</arg3>
-                    <arg4 xmlns="">${params[1]}</arg4>
-                    <arg5 xmlns="">${localStorage.getItem("username")}</arg5>
-                    <arg6 xmlns="">ini_api_key_monolitik</arg6>
-                </requestFollow>
-            </Body>
-        </Envelope>
-    `);
+    xhr.send(formData);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             const data = this.responseXML
@@ -104,7 +85,7 @@ function addCreator(username, fullname, desc, id, url, status) {
 
     const creator = `
         <div class="creator-left">
-            <img class="creator-left-img" src=${url}/>
+            <img class="creator-left-img" src="http://localhost:3000/profiles/${url}"/>
             ${
                 status === "REJECTED" ?
                 `<button class="black-button button-follow" id="${id}-${username}-${fullname}">Follow</button>`
@@ -134,22 +115,10 @@ backButton.addEventListener('click', function() {
 function getContents(){
     const xhr = new XMLHttpRequest();
     xhr.open(
-        "POST",
-        "http://localhost:8000/api/following"
+        "GET",
+        `/public/SOAP//getContents?page=${1}&id=${localStorage.getItem("id")}`
     );
-    xhr.setRequestHeader("Content-Type", "text/xml");
-    xhr.send(`
-        <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
-            <Body>
-                <getContent xmlns="http://services.example.org/">
-                    <arg0 xmlns="">${localStorage.getItem("id")}</arg0>
-                    <arg1 xmlns="">${1}</arg1>
-                    <arg2 xmlns="">5</arg2>
-                    <arg3 xmlns="">ini_api_key_monolitik</arg3>
-                </getContent>
-            </Body>
-        </Envelope>
-    `);
+    xhr.send();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             const res = JSON.parse(this.responseXML.getElementsByTagName("return")[0].textContent)
@@ -166,7 +135,7 @@ function addPhoto(id, type, post_date, url, description) {
 
     const creator = `
     <div class="photo-img-container" id="hehe">
-        <img class="photo-img" src="<?= BASE_URL ?>/assets/images/register-page.png"/>
+        <img class="photo-img" src="${"http://localhost:3000/objects/"+url}"/>
     </div>
     <div class="photo-info-container">
         <div class="scrollable-spaces">
