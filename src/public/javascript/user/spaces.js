@@ -25,6 +25,121 @@ searchbar &&
         }, DEBOUNCE_TIMEOUT)
     );
 
+function isLiked(id, type) {
+    const xhr = new XMLHttpRequest();
+    let object;
+
+    if (type == 'Broadcast') {
+        object = document.getElementById('likestatbc' + id);
+        xhr.open("GET", `http://localhost:3000/api/broadcast/like?user=${localStorage.getItem("username")}&id=${id}`);
+    } else {
+        object = document.getElementById('likestat' + id);
+        xhr.open("GET", `http://localhost:3000/api/content/like?user=${localStorage.getItem("username")}&id=${id}`);
+    }
+    
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE) {
+            var responseObj = JSON.parse(this.responseText);
+            console.log(responseObj);
+            if (responseObj.data) {
+                object.src = BASE_URL + "/assets/icons/liked.png";
+            } else {
+                object.src = BASE_URL + "/assets/icons/heart.png";
+            }
+        }
+    };
+}
+
+function getComments(id, type) {
+    const xhr = new XMLHttpRequest();
+
+    if (type == 'Broadcast') {
+        xhr.open("GET", `http://localhost:3000/api/broadcast/comment?user=${localStorage.getItem("username")}&id=${id}`);
+    } else {
+        xhr.open("GET", `http://localhost:3000/api/content/comment?user=${localStorage.getItem("username")}&id=${id}`);
+    }
+    
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE) {
+            var responseObj = JSON.parse(this.responseText);
+            console.log(responseObj, responseObj.data.length);
+            
+            let container;
+            if (type == 'Broadcast') {
+                container = document.getElementById('commentsbc' + id);
+            } else {
+                container = document.getElementById('comments' + id);
+            }
+
+            for (let i = 0; i < responseObj.data.length; i++) {
+                let comment = makeUserComment(responseObj.data[i].message, responseObj.data[i].user);
+                container.appendChild(comment);
+            }
+        }
+    };
+}
+
+function addComment(object) {
+    let object_id = object.parentElement.parentElement.parentElement.parentElement.id;
+    let classname = object.parentElement.parentElement.parentElement.parentElement.className;
+    let textfield;
+
+    const xhr = new XMLHttpRequest();
+
+    if (classname == 'broadcast') {
+        textfield = document.querySelector(`#tfbc-comment${object_id}`)
+        xhr.open("POST", "http://localhost:3000/api/broadcast/comment/" + object_id);
+        xhr.setRequestHeader("Content-Type", "application/json");
+    } else {
+        textfield = document.querySelector(`#tf-comment${object_id}`)
+        xhr.open("POST", "http://localhost:3000/api/content/comment/" + object_id);
+        xhr.setRequestHeader("Content-Type", "application/json");
+    }
+
+    xhr.send(JSON.stringify({user: localStorage.getItem("username"), message: textfield.value}));
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE) {
+            let comment = makeUserComment(textfield.value, localStorage.getItem("username"));
+            let container;
+            if (classname == 'broadcast') {
+                container = document.getElementById('commentsbc' + object_id);
+            } else {
+                container = document.getElementById('comments' + object_id);
+            }
+            container.appendChild(comment);
+            textfield.value = '';
+        }
+    };
+}
+
+function makeUserComment(content, username) {
+    const commentItemDiv = document.createElement("div");
+    commentItemDiv.classList.add("comment-item");
+
+    const commentContainerDiv = document.createElement("div");
+    commentContainerDiv.classList.add("comment-container");
+
+    const commentSenderP = document.createElement("p");
+    commentSenderP.classList.add("comment-sender");
+    commentSenderP.textContent = username;
+
+    const commentContentP = document.createElement("p");
+    commentContentP.classList.add("comment-content");
+    commentContentP.textContent = content;
+
+    commentContainerDiv.appendChild(commentSenderP);
+    commentContainerDiv.appendChild(commentContentP);
+
+    commentItemDiv.appendChild(commentContainerDiv);
+    return commentItemDiv;
+}
+
 function getContentCreators(page, filter){
     const xhr = new XMLHttpRequest();
     xhr.open(
@@ -72,10 +187,42 @@ function reqFollow(e){
 }
 
 function changeLike(object) {
+    let object_id = object.parentElement.parentElement.parentElement.parentElement.id;
+    let classname = object.parentElement.parentElement.parentElement.parentElement.className;
+
     if (object.src == BASE_URL + "/assets/icons/heart.png") {
-        object.src = BASE_URL + "/assets/icons/liked.png";
+        const xhr = new XMLHttpRequest();
+        
+        if (classname == 'broadcast') {
+            xhr.open("POST", "http://localhost:3000/api/broadcast/like/" + object_id);
+            xhr.setRequestHeader("Content-Type", "application/json");
+        } else {
+            xhr.open("POST", "http://localhost:3000/api/content/like/" + object_id);
+            xhr.setRequestHeader("Content-Type", "application/json");
+        }
+
+        xhr.send(JSON.stringify({user: localStorage.getItem("username")}));
+        xhr.onreadystatechange = function () {
+            if (this.readyState === XMLHttpRequest.DONE) {
+                object.src = BASE_URL + "/assets/icons/liked.png";
+            }
+        };
     } else {
-        object.src = BASE_URL + "/assets/icons/heart.png";
+        const xhr = new XMLHttpRequest();
+        if (classname == 'broadcast') {
+            xhr.open("DELETE", "http://localhost:3000/api/broadcast/like/" + object_id + "/" + localStorage.getItem("username"));
+            xhr.setRequestHeader("Content-Type", "application/json");
+        } else {
+            xhr.open("DELETE", "http://localhost:3000/api/content/like/" + object_id + "/" + localStorage.getItem("username"));
+            xhr.setRequestHeader("Content-Type", "application/json");
+        }
+
+        xhr.send(JSON.stringify({user: localStorage.getItem("username")}));
+        xhr.onreadystatechange = function () {
+            if (this.readyState === XMLHttpRequest.DONE) {
+                object.src = BASE_URL + "/assets/icons/heart.png";
+            }
+        };
     }          
 }
 
@@ -124,7 +271,7 @@ function getContents(){
             const res = JSON.parse(this.responseXML.getElementsByTagName("return")[0].textContent)
             console.log(res)
             res.data.objects.map(obj => addPhoto(obj.objectID, obj.type, obj.post_date, obj.url, obj.description))
-            res.data.broadcasts.map(bdc => addBroadcast(bdc.objectID, bdc.description))
+            res.data.broadcasts.map(bdc => addBroadcast(bdc.objectID, bdc.description, bdc.post_date))
         }
     };
 }
@@ -132,6 +279,7 @@ function getContents(){
 function addPhoto(id, type, post_date, url, description) {
     let node = document.createElement('div');
     node.className = 'photo';
+    node.id = id;
 
     const creator = `
     <div class="photo-img-container" id="hehe">
@@ -144,25 +292,25 @@ function addPhoto(id, type, post_date, url, description) {
             </div>
             <br>
             <div class="photo-info-property">
-                <img src=${url || ""} class="photo-property-icon"/>
+                <img src=${BASE_URL}/assets/icons/profile.png class="photo-property-icon"/>
                 <p class="photo-property-desc" id="hedwd"></p>
             </div>
             <div class="photo-info-property">
-                <img src="<?= BASE_URL ?>/assets/icons/heart.png" class="photo-property-icon" onclick="changeLike(this)" />
+                <img src="${BASE_URL}/assets/icons/heart.png" class="photo-property-icon" id="likestat${id}" onclick="changeLike(this)" />
                 <p class="photo-property-desc">Like</p>
             </div>
             <div class="photo-info-property">
-                <img src="<?= BASE_URL ?>/assets/icons/date.png" class="photo-property-icon"/>
-                <p class="photo-property-desc"></p>
+                <img src="${BASE_URL}//assets/icons/date.png" class="photo-property-icon"/>
+                <p class="photo-property-desc">${post_date}</p>
             </div>
             <br>
             <h1 class="visibility-status">Comments</h1>
-            <div class="comments-container" >
+            <div class="comments-container" id="comments${id}">
             </div>
         </div>
         <div>
             <div class="form">
-                <input type="text"  class="textfield2" placeholder="Write a comment"><br>    
+                <input type="text" id="tf-comment${id}" class="textfield2" placeholder="Write a comment"><br>    
                 <input type="submit" onclick="addComment(this)" value="Send" class="button-black">
             </div>
         </div>
@@ -170,26 +318,49 @@ function addPhoto(id, type, post_date, url, description) {
 
     node.innerHTML = creator;
     content.appendChild(node);
+    isLiked(id, 'Content');
+    getComments(id, 'Content');
 }
 
-function addBroadcast(id, description) {
+function addBroadcast(id, description, date) {
     let node = document.createElement('div');
     node.className = 'broadcast';
+    node.id = id;
 
     const creator = `
-        <p class="bc-head">NEW CONTENT COMING</p>
-        <p class="bc-content">${description}</p>
-        <div class="bc-prop">
-            <div class="photo-info-property">
-                <img src="<?= BASE_URL ?>/assets/icons/heart.png" class="photo-property-icon" onclick="changeLike(this)" />
-                <p class="photo-property-desc">Like</p>
+            <div class="photo-img-container">
+                <p class="bc-content">${description}</p>
             </div>
-            <div class="photo-info-property">
-                <img src="<?= BASE_URL ?>/assets/icons/date.png" class="photo-property-icon" onclick="changeLike(this)" />
-                <p class="photo-property-desc">Date</p>
-            </div>
-        </div>`
+            <div class="photo-info-container">
+                <div class="scrollable-spaces">
+                    <br/>
+                    <div class="photo-info-property">
+                        <img src=${BASE_URL}/assets/icons/profile.png class="photo-property-icon" />
+                        <p class="photo-property-desc" id="hedwd"></p>
+                    </div>
+                    <div class="photo-info-property">
+                        <img src="${BASE_URL}/assets/icons/heart.png" class="photo-property-icon" id="likestatbc${id}" onclick="changeLike(this)" />
+                        <p class="photo-property-desc">Like</p>
+                    </div>
+                    <div class="photo-info-property">
+                        <img src="${BASE_URL}//assets/icons/date.png" class="photo-property-icon"/>
+                        <p class="photo-property-desc">${date}</p>
+                    </div>
+                    <br>
+                    <h1 class="visibility-status">Comments</h1>
+                    <div class="comments-container" id="commentsbc${id}">
+                    </div>
+                </div>
+                <div>
+                    <div class="form">
+                        <input type="text" id="tfbc-comment${id}" class="textfield2" placeholder="Write a comment"><br>    
+                        <input type="submit" onclick="addComment(this)" value="Send" class="button-black">
+                    </div>
+                </div>
+            </div>` 
 
     node.innerHTML = creator;
     content.appendChild(node);
+    isLiked(id, 'Broadcast');
+    getComments(id, 'Broadcast');
 }
