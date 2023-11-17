@@ -181,6 +181,7 @@ function reqFollow(e){
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             const data = this.responseXML
+            getContentCreators(1, '')
             console.log(data)
         }
     };
