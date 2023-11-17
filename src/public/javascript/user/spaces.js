@@ -310,7 +310,8 @@ function addPhoto(id, type, post_date, url, description) {
 
     const creator = `
     <div class="photo-img-container" id="hehe">
-        <img class="photo-img" src="${"http://localhost:3000/objects/"+url}"/>
+        ${type == 'Photo' ? `<img class="photo-img" src="${"http://localhost:3000/objects/"+url}"/>` : `<video controls class="photo-img" src="${"http://localhost:3000/objects/"+url}"/>`}
+        
     </div>
     <div class="photo-info-container">
         <div class="scrollable-spaces">

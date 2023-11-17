@@ -155,14 +155,46 @@ usernameConfirmButton &&
             formData.append("new_username", username);
             formData.append("csrf_token", CSRF_TOKEN);
 
-            const xhr = new XMLHttpRequest();
+            let xhr = new XMLHttpRequest();
             xhr.open("POST", "/public/user/updateUsernameByUsername");
 
             xhr.send(formData);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (this.status === 201) {
-                        window.location.href = "/public/admin/user/" + username;
+                        // update username in Rest Database
+                        xhr = new XMLHttpRequest();
+                        xhr.open("PUT", "http://localhost:3000/api/follower");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+
+                        xhr.send(JSON.stringify({oldUsername: USERNAME, newUsername: username}));
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === XMLHttpRequest.DONE) {
+                                if (this.status === 200) {
+                                    // update username in SOAP Database
+                                    xhr = new XMLHttpRequest();
+                                    xhr.open("POST", "http://localhost:8000/api/following");
+                                    xhr.setRequestHeader("Content-Type", "text/xml");
+
+                                    xhr.send(`
+                                        <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+                                            <Body>
+                                                <updateFollowerUsername xmlns="http://services.example.org/">
+                                                    <arg0 xmlns="">${USERNAME}</arg0>
+                                                    <arg1 xmlns="">${username}</arg1>
+                                                    <arg2 xmlns="">ini_api_key_monolitik</arg2>
+                                                </updateFollowerUsername>
+                                            </Body>
+                                        </Envelope>
+                                    `)
+                                    xhr.onreadystatechange = function () {
+                                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                                            window.location.href = "/public/admin/user/" + username;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             };
@@ -194,6 +226,8 @@ fullnameInput &&
 fullnameConfirmButton &&
     fullnameConfirmButton.addEventListener("click", async (e) => {
         if (fullnameValid) {
+            const fullnameParts = currentFullname.innerText.split(": ");
+            const oldFullname = fullnameParts.length > 1 ? fullnameParts[1] : null;
             const fullname = fullnameInput.value;
 
             const formData = new FormData();
@@ -201,14 +235,34 @@ fullnameConfirmButton &&
             formData.append("fullname", fullname);
             formData.append("csrf_token", CSRF_TOKEN);
 
-            const xhr = new XMLHttpRequest();
+            let xhr = new XMLHttpRequest();
             xhr.open("POST", "/public/user/updateFullnameByUsername");
 
             xhr.send(formData);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (this.status === 201) {
-                        window.location.reload();
+                        // update fullname in SOAP Database
+                        xhr = new XMLHttpRequest();
+                        xhr.open("POST", "http://localhost:8000/api/following");
+                        xhr.setRequestHeader("Content-Type", "text/xml");
+
+                        xhr.send(`
+                            <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+                                <Body>
+                                    <updateFollowerName xmlns="http://services.example.org/">
+                                        <arg0 xmlns="">${oldFullname}</arg0>
+                                        <arg1 xmlns="">${fullname}</arg1>
+                                        <arg2 xmlns="">ini_api_key_monolitik</arg2>
+                                    </updateFollowerName>
+                                </Body>
+                            </Envelope>
+                        `)
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === XMLHttpRequest.DONE) {
+                                window.location.reload();
+                            }
+                        }
                     }
                 }
             };

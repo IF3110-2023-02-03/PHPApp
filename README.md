@@ -1,11 +1,13 @@
-# IF3110-2023-01-03
-# Moments
+# IF3110-2023-02-03
+# Moments - PHP App
 
-> Disusun untuk memenuhi Tugas Milestone 1 - IF3110 Pengembangan Aplikasi Berbasis Web
+> Disusun untuk memenuhi IF3110 Pengembangan Aplikasi Berbasis Web
 
 ## Daftar Isi
 
 -   [Deskripsi Aplikasi _Web_](#deskripsi-aplikasi-web)
+-   [Deskripsi Pembaruan (Milestone 2)](#deskripsi-pembaruan-milestone-2)
+-   [Tim Pengembang](#tim-pengembang)
 -   [Struktur Program](#struktur-program)
 -   [Daftar _Requirement_](#daftar-requirement)
 -   [Cara Instalasi](#cara-instalasi)
@@ -16,11 +18,23 @@
 
 ## Deskripsi Aplikasi _Web_
 
-**Moments** Begitu banyak moment penting dalam hidup yang layak untuk diingat, entah moment bahagia, senang, ataupun sedih. Moments hadir untuk masalah tersebut. Dengan aplikasi berbasis web ini, Anda dapaet mengabadikan moment penting dalam hidup Anda dengan sangat mudah. Aplikasi ini dikembangkan menggunakan DBMS (MySQL) dan PHP murni beserta HTML, CSS, dan Javascript vanilla.
+Begitu banyak moment penting dalam hidup yang layak untuk diingat, entah moment bahagia, senang, ataupun sedih. Moments hadir untuk masalah tersebut. Dengan aplikasi berbasis web ini, Anda dapaet mengabadikan moment penting dalam hidup Anda dengan sangat mudah. Anda dapat menyimpan semua kenangan Anda dan berbagi dengan semua komunitas di Moments. Aplikasi ini dikembangkan menggunakan DBMS (MySQL) dan PHP murni beserta HTML, CSS, dan Javascript vanilla.
+
+## Deskripsi Pembaruan (Milestone 2)
+Sekarang, kamu tidak hanya bisa melihat seluruh moments dari seluruh anggota komunitas moments. Moments saat ini sudah terhubung dengan layanan Spaces (aplikasi berbagi konten dengan creator). Kamu dapat mengembangkan jaringanmu dengan seluruh creator yang ada pada Spaces. Tak hanya itu, kamu juga dapat menikmati seluruh konten yang disediakan kreator Spaces langsung pada aplikasi Moments. 
+
+## Tim Pengembang
+
+| Nama                   | NIM      | Panggilan |
+| ---------------------- | -------- | --------- |
+| Mutawally Nawwar | 13521065 | Nawwar    |
+| Ghazi Akmal Fauzan          | 13521058 | Ghazi  |
+| Antonio Natthan Krishna     | 13521162 | Nate    |
+| Ahmad Hapinuddin    | 10023079 | Hapid     |
 
 
 ## Daftar _Requirement_
-
+**Milestone 1:**
 1. Login
 2. Register
 3. Home
@@ -33,6 +47,11 @@
 10. User Management
 11. Admin Detail
 12. CRUD image, video
+
+**Milestone 2:**
+1. Spaces
+2. Request Following
+3. Manipulation Creator Content 
 
 ## Cara Instalasi
 
@@ -51,15 +70,15 @@
 
 ### Login
 
-![Login](https://github.com/natthankrish/IF3110-2023-01-03/assets/89324014/e061db4b-39c2-4740-9518-bdd58d99def9)
+![Input](assets/image-1.png)
 
 ### Register
 
-![Register](https://github.com/natthankrish/IF3110-2023-01-03/assets/89324014/a26da485-a074-4839-9ced-4c2a13bee684)
+![Register](assets/image-2.png)
 
 ### Home
 
-![Home](https://github.com/natthankrish/IF3110-2023-01-03/assets/89324014/1a903062-6089-4fa1-8106-c6a174eba6da)
+![Home](assets/image-3.png)
 
 ### Photos
 
@@ -81,9 +100,6 @@
 Browser dan Docker
 
 ## BONUS
-### Google Lighthouse
-![Google Lighthouse](https://github.com/natthankrish/IF3110-2023-01-03/assets/92136335/69e287ff-40a4-4912-a36f-71739d262a57)
-
 ### Docker
 
 ## **Folder Structure**
@@ -189,16 +205,7 @@ Browser dan Docker
                 .gitkeep
 ``````
 
-## **Pembagian Kerja - Workload Breakdown**
-
-**Anggota Kelompok**
-
-| Nama                   | NIM      | Panggilan |
-| ---------------------- | -------- | --------- |
-| Mutawally Nawwar | 13521065 | Nawwar    |
-| Ghazi Akmal Fauzan          | 13521058 | Ghazi  |
-| Antonio Natthan Krishna     | 13521162 | Nate    |
-| Ahmad Hapinuddin    | 10023079 | Hapid     |
+## **Pembagian Kerja - Workload Breakdown (Milestone 1)**
 
 **Server Side:**
 
@@ -220,4 +227,19 @@ Browser dan Docker
 | 13521058           | Ghazi       | Admin Page Rendering |
 | 13521065 | Nawwar | Search Page Rendering |
 
+## **Pembagian Kerja - Workload Breakdown (Milestone 2)**
+**Server Side:**
+
+| NIM                | Nama            | Fungsionalitas                                                                                                                                                  |
+| ------------------ | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 13521065           | Nawwar           | SOAP Connection   |
+| 13521058           | Ghazi            | Milestone 1 Revision : Pagination, Search   |
+
+**Client Side:**
+
+| NIM                | Nama            | Fungsionalitas                                                                                                                                                                                                                                                  |
+| ------------------ | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 13521065           | Nawwar           | Following, Content Request  |
+| 13521058           | Ghazi            | Change Username Request      |
+| 13521162           | Nate             | Frontend Page and Functionality, Like Request, Comment Request      |
 
