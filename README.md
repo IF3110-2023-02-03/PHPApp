@@ -6,6 +6,7 @@
 ## Daftar Isi
 
 -   [Deskripsi Aplikasi _Web_](#deskripsi-aplikasi-web)
+-   [Deskripsi Pembaruan (Milestone 2)](#deskripsi-pembaruan-milestone-2)
 -   [Tim Pengembang](#tim-pengembang)
 -   [Struktur Program](#struktur-program)
 -   [Daftar _Requirement_](#daftar-requirement)
