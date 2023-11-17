@@ -1,7 +1,7 @@
 # IF3110-2023-01-03
 # Moments
 
-> Disusun untuk memenuhi Tugas Milestone 1 - IF3110 Pengembangan Aplikasi Berbasis Web
+> Disusun untuk memenuhi IF3110 Pengembangan Aplikasi Berbasis Web
 
 ## Daftar Isi
 
