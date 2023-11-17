@@ -89,7 +89,7 @@ class SOAPController extends Controller implements ControllerInterface
                         <Body>
                             <getContentCreators xmlns=\"http://services.example.org/\">
                                 <arg0 xmlns=\"\">$page</arg0>
-                                <arg1 xmlns=\"\">12</arg1>
+                                <arg1 xmlns=\"\">10000</arg1>
                                 <arg2 xmlns=\"\">$filter</arg2>
                                 <arg3 xmlns=\"\">$id</arg3>
                                 <arg4 xmlns=\"\">ini_api_key_monolitik</arg4>
@@ -139,7 +139,7 @@ class SOAPController extends Controller implements ControllerInterface
                                 <getContent xmlns=\"http://services.example.org/\">
                                     <arg0 xmlns=\"\">$id</arg0>
                                     <arg1 xmlns=\"\">$page</arg1>
-                                    <arg2 xmlns=\"\">5</arg2>
+                                    <arg2 xmlns=\"\">10000</arg2>
                                     <arg3 xmlns=\"\">ini_api_key_monolitik</arg3>
                                 </getContent>
                             </Body>

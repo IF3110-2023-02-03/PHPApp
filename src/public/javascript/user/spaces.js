@@ -319,10 +319,6 @@ function addPhoto(id, type, post_date, url, description) {
             </div>
             <br>
             <div class="photo-info-property">
-                <img src=${BASE_URL}/assets/icons/profile.png class="photo-property-icon"/>
-                <p class="photo-property-desc" id="hedwd"></p>
-            </div>
-            <div class="photo-info-property">
                 <img src="${BASE_URL}/assets/icons/heart.png" class="photo-property-icon" id="likestat${id}" onclick="changeLike(this)" />
                 <p class="photo-property-desc">Like</p>
             </div>
@@ -361,10 +357,6 @@ function addBroadcast(id, description, date) {
             <div class="photo-info-container">
                 <div class="scrollable-spaces">
                     <br/>
-                    <div class="photo-info-property">
-                        <img src=${BASE_URL}/assets/icons/profile.png class="photo-property-icon" />
-                        <p class="photo-property-desc" id="hedwd"></p>
-                    </div>
                     <div class="photo-info-property">
                         <img src="${BASE_URL}/assets/icons/heart.png" class="photo-property-icon" id="likestatbc${id}" onclick="changeLike(this)" />
                         <p class="photo-property-desc">Like</p>
