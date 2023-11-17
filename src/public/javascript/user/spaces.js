@@ -144,7 +144,7 @@ function getContentCreators(page, filter){
     const xhr = new XMLHttpRequest();
     xhr.open(
         "GET",
-        `/public/SOAP/getContentCreators?page=1&filter=${searchbar.ariaValueText || ''}&id=${localStorage.getItem("id")}`
+        `/public/SOAP/getContentCreators?page=${page}&filter=${filter}&id=${localStorage.getItem("id")}`
     )
     xhr.send()
     xhr.onreadystatechange = function () {
@@ -263,7 +263,7 @@ function getContents(){
     const xhr = new XMLHttpRequest();
     xhr.open(
         "GET",
-        `/public/SOAP//getContents?page=${1}&id=${localStorage.getItem("id")}`
+        `/public/SOAP/getContents?page=${1}&id=${localStorage.getItem("id")}`
     );
     xhr.send();
     xhr.onreadystatechange = function () {
