@@ -70,15 +70,15 @@ Sekarang, kamu tidak hanya bisa melihat seluruh moments dari seluruh anggota kom
 
 ### Login
 
-![Input](image-1.png)
+![Input](assets/image-1.png)
 
 ### Register
 
-![Register](image-2.png)
+![Register](assets/image-2.png)
 
 ### Home
 
-![Home](image-3.png)
+![Home](assets/image-3.png)
 
 ### Photos
 
